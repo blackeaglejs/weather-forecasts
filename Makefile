@@ -14,4 +14,4 @@ test:
 	docker compose run --rm web bin/rails test
 
 migrate: 
-  docker compose run --rm web bin/rails db:migrate
+	docker compose run --rm web bin/rails db:migrate

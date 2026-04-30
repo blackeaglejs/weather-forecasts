@@ -1,0 +1,48 @@
+<div id="<%= dom_id location %>" class="w-full sm:w-auto my-5 space-y-5">
+  <div>
+    <strong class="block font-medium mb-1">Address one:</strong>
+    <%= location.address_one %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Address two:</strong>
+    <%= location.address_two %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">City:</strong>
+    <%= location.city %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Province:</strong>
+    <%= location.province %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Postal code:</strong>
+    <%= location.postal_code %> 
+  </div> 
+  <div>
+    <strong class="block font-medium mb-1">Country:</strong>
+    <%= location.country %>
+  </div> 
+
+  <% if latest_forecast.present? %>
+    <div>
+      <strong class="block font-medium mb-1">Latest Forecast</strong>
+    </div>
+    <div>
+      <div>
+      <strong class="block font-medium mb-1">Current Temperature:</strong>
+      <%= "#{latest_forecast.current_temperature}°#{latest_forecast.units.capitalize}" %>
+    </div> 
+      <strong class="block font-medium mb-1">High:</strong>
+      <%= "#{latest_forecast.high}°#{latest_forecast.units.capitalize}" %>
+    </div> 
+    <div>
+      <strong class="block font-medium mb-1">Low:</strong>
+      <%= "#{latest_forecast.low}°#{latest_forecast.units.capitalize}" %>
+    </div> 
+    <div>
+      <strong class="block font-medium mb-1">Forecast Time:</strong>
+      <%= "#{latest_forecast.created_at}" %>
+    </div> 
+  <% end %>
+</div>

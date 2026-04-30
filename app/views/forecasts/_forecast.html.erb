@@ -1,0 +1,22 @@
+<div id="<%= dom_id forecast %>" class="w-full sm:w-auto my-5 space-y-5">
+  <div>
+    <strong class="block font-medium mb-1">Current temperature:</strong>
+    <%= forecast.current_temperature %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">High:</strong>
+    <%= forecast.high %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Low:</strong>
+    <%= forecast.low %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Time:</strong>
+    <%= forecast.time %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Location:</strong>
+    <%= forecast.location_id %>
+  </div>
+</div>

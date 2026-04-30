@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  current_temperature: 9.99
+  high: 9.99
+  low: 9.99
+  time: 2026-04-30 17:48:36
+  location: one
+
+two:
+  current_temperature: 9.99
+  high: 9.99
+  low: 9.99
+  time: 2026-04-30 17:48:36
+  location: two

@@ -1,0 +1,42 @@
+<%= form_with(model: forecast, class: "contents") do |form| %>
+  <% if forecast.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
+      <h2><%= pluralize(forecast.errors.count, "error") %> prohibited this forecast from being saved:</h2>
+
+      <ul class="list-disc ml-6">
+        <% forecast.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="my-5">
+    <%= form.label :current_temperature %>
+    <%= form.text_field :current_temperature, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": forecast.errors[:current_temperature].none?, "border-red-400 focus:outline-red-600": forecast.errors[:current_temperature].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :high %>
+    <%= form.text_field :high, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": forecast.errors[:high].none?, "border-red-400 focus:outline-red-600": forecast.errors[:high].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :low %>
+    <%= form.text_field :low, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": forecast.errors[:low].none?, "border-red-400 focus:outline-red-600": forecast.errors[:low].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :time %>
+    <%= form.datetime_field :time, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": forecast.errors[:time].none?, "border-red-400 focus:outline-red-600": forecast.errors[:time].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :location_id %>
+    <%= form.text_field :location_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": forecast.errors[:location_id].none?, "border-red-400 focus:outline-red-600": forecast.errors[:location_id].any?}] %>
+  </div>
+
+  <div class="inline">
+    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+  </div>
+<% end %>
