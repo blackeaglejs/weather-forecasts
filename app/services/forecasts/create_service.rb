@@ -13,10 +13,12 @@ module Forecasts
     # this call fetches the forecast data
     # then we parse the response to extract the relevant forecast attributes
     # then we create a new forecast record associated with the location
+    # we finish by writing to the cache with the postal code as the key and the database ID as the value
     def call
       fetch_forecast_data
       parse_forecast_response
       create_forecast
+      write_to_cache
 
       @forecast
     end
@@ -52,6 +54,10 @@ module Forecasts
 
     def create_forecast
       @forecast = @location.forecasts.create(parse_forecast_response)
+    end
+
+    def write_to_cache
+        Rails.cache.write("#{@location.postal_code}", @forecast.id, expires_in: 30.minutes)
     end
 
     # this API url uses the lat/lng to get current temperature, daily high, and daily low for this location.
