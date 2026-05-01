@@ -13,6 +13,7 @@ class LocationsController < ApplicationController
   # GET /locations/new
   def new
     @location = Location.new
+    @countries = LocationsHelper.country_list
   end
 
   # GET /locations/1/edit
