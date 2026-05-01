@@ -31,18 +31,18 @@
     <div>
       <div>
       <strong class="block font-medium mb-1">Current Temperature:</strong>
-      <%= "#{latest_forecast.current_temperature}°#{latest_forecast.units.capitalize}" %>
+      <%= "#{latest_forecast&.current_temperature}°#{latest_forecast&.units&.capitalize}" %>
     </div> 
       <strong class="block font-medium mb-1">High:</strong>
-      <%= "#{latest_forecast.high}°#{latest_forecast.units.capitalize}" %>
+      <%= "#{latest_forecast&.high}°#{latest_forecast&.units&.capitalize}" %>
     </div> 
     <div>
       <strong class="block font-medium mb-1">Low:</strong>
-      <%= "#{latest_forecast.low}°#{latest_forecast.units.capitalize}" %>
+      <%= "#{latest_forecast&.low}°#{latest_forecast&.units&.capitalize}" %>
     </div> 
     <div>
       <strong class="block font-medium mb-1">Forecast Time:</strong>
-      <%= "#{latest_forecast.created_at}" %>
+      <%= "#{latest_forecast&.created_at}" %>
     </div> 
   <% end %>
 </div>

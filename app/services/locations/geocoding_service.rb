@@ -12,22 +12,42 @@ module Locations
 
     # the call method is the public method for this interface - all the business logic is in private emthods. 
     def call
-      geocode_location
-      update_location_coordinates
+      # pull the coordinates either out of the database or from the geocoding API
+      coordinates = find_coordinates_from_zip_code || geocode_location
+      binding.irb
+      update_location_coordinates(coordinates)
 
       @location
     end
 
     private
 
+    # let's try and find the location's approximate coordinates out of the database.
+    # the idea here is that zip codes are relatively small, so a weather forecast I'm not expecting huge 
+    # variability in the lat/lng, and by extension of that, the weather forecast
+    def find_coordinates_from_zip_code
+      return nil if @location.postal_code.blank?
+
+      existing_location = Location.where(postal_code: @location.postal_code).where.not(latitude: nil, longitude: nil).first
+      return nil if existing_location.blank?
+
+      {
+        latitude: existing_location.latitude,
+        longitude: existing_location.longitude
+      }
+    end
+
     # this method makes the geocoding API call.
+    # it then parses the response and gets the coordinates
     def geocode_location
       @raw_response = HTTParty.get(lookup_url, headers:)
+
+      parse_geocoding_response(@raw_response)
     end
 
     # here, we take the raw response from the geocoding API, parse it, and update the location with the lat/lng coordinates
-    def update_location_coordinates
-      @location.update(parse_geocoding_response(@raw_response))
+    def update_location_coordinates(coordinates)
+      @location.update(coordinates)
     end
 
     # the response from nominatim is an array of matches, but having specified a limit of 1, we'll either get an empty array or an array with one element 
@@ -53,7 +73,7 @@ module Locations
     end
 
     def street
-      combined = [@location.address_one, @location.address_two].compact.join(" ")
+      combined = [@location.address_one, @location.address_two].compact.join(" ").rstrip
       combined.present? ? "street=#{combined}" : ""
     end
 

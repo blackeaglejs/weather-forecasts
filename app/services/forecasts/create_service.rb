@@ -32,6 +32,10 @@ module Forecasts
 
     # we generate a parsed response with the relevant attributes for our forecast model
     def parse_forecast_response
+      binding.pry
+      puts "="*100
+      puts @raw_response.inspect
+      puts "================================ "
       {
        current_temperature: @raw_response.dig("current_weather", "temperature"),
        high: @raw_response.dig("daily", "temperature_2m_max", 0),
