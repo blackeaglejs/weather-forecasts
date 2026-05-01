@@ -12,11 +12,8 @@ until pg_isready -h db -U postgres; do
   sleep 1
 done
 
-echo "Creating database..."
-bin/rails db:create || true
-
-echo "Running migrations..."
-bin/rails db:migrate
+echo "Preparing database..."
+bin/rails db:prepare
 
 echo "Starting Rails server..."
 exec "$@"
