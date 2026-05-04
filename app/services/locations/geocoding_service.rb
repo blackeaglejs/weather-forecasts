@@ -16,8 +16,10 @@ module Locations
       # 2. if that fails, we'll call geocode to get the coordinates from the nominatim API.
       # 3. if the geocoding API call fails or returns empty, we'll try one more time with *just* the postal code (if we have it)
       coordinates = find_coordinates_from_zip_code || geocode_location || geocode_location_with_postal_code
-      update_location_coordinates(coordinates)
-      @location.reload
+      if coordinates.present?
+        update_location_coordinates(coordinates)
+        @location.reload
+      end
 
       if @location.geocoding_required?
         raise StandardError.new("Unable to geocode location with the provided information")
@@ -67,11 +69,12 @@ module Locations
     # the response from nominatim is an array of matches, but having specified a limit of 1, we'll either get an empty array or an array with one element 
     # we only care here about the lat/lng in the response - not any of the other parameters - for now, so we'll ignore the rest of the response. 
     def parse_geocoding_response(response)
-      return {} if response.empty?
+      parsed_response = JSON.parse(response.body)
+      return nil if parsed_response.empty?
 
       {
-        latitude: response.first["lat"],
-        longitude: response.first["lon"]
+        latitude: parsed_response.first["lat"].to_d,
+        longitude: parsed_response.first["lon"].to_d,
       }
     end
 
