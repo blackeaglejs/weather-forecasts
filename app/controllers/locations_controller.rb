@@ -22,41 +22,21 @@ class LocationsController < ApplicationController
 
   # POST /locations or /locations.json
   def create
-    # let's build the location object. 
-    @location = Location.find_or_create_by(location_params)
-    if @location.geocoding_required?
-      service = Locations::GeocodingService.new(@location)
-      service.call
-    end
-
-    # let's get the weather forecast
-    # if we have the postal code, we can try and pull from the cache.
-    if @location.postal_code.present?
-      forecast = Forecasts::FetchByZipService.new(@location.postal_code).call
-    end
-
-    # if we don't find it via the cache, we can try and pull it by the coordinates we have. 
-    # otherwise we can just dup the forecast we found and associate it with the new location.
-    if forecast.blank?
-      forecast = Forecasts::CreateService.new(@location).call
-    else
-      duped_forecast = forecast.dup
-      duped_forecast.location = @location
-      duped_forecast.save!
-    end
+    # the business logic for this controller call sits in a service object. 
+    # we can initialize the service object and let it handle the orchestration.
+    location, forecast = Locations::CreateWithForecastService.new(location_params).call
 
     respond_to do |format|
       # happy path
-      if @location.present? && forecast.present?
+      if @location.present? && @forecast.present?
         format.html { redirect_to @location, notice: "Location was successfully created." }
         format.json { render :show, status: :created, location: @location }
-      # the location didn't get created
-      elsif @location.errors.any?
+      # the location didn't get created or has errors.
+      elsif @location.errors.any? || @location.blank? 
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @location.errors, status: :unprocessable_entity }
-      # the else statement covers us creating the location but not being able to get a forecast
-      else
-        format.html { render :new, status: :unprocessable_entity }
+      elsif @location.present? && @forecast.blank?
+        format.html { redirect_to @location, notice: "Location was created, but we were unable to retrieve the forecast." }
         format.json { render json: forecast.errors, status: :unprocessable_entity }
       end
     end
