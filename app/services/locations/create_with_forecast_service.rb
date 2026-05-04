@@ -23,7 +23,7 @@ module Locations
       geocode_location if @forecast.blank? && @location.geocoding_required?
       create_forecast if @forecast.blank? && !@location.geocoding_required? # don't try to pull the forecast if we don't have the coordinates.
 
-      @location, @forecast
+      [@location, @forecast]
     end
 
     private

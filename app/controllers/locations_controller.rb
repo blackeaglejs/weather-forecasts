@@ -24,7 +24,7 @@ class LocationsController < ApplicationController
   def create
     # the business logic for this controller call sits in a service object. 
     # we can initialize the service object and let it handle the orchestration.
-    location, forecast = Locations::CreateWithForecastService.new(location_params).call
+    @location, @forecast = Locations::CreateWithForecastService.new(location_params).call
 
     respond_to do |format|
       # happy path
@@ -32,12 +32,13 @@ class LocationsController < ApplicationController
         format.html { redirect_to @location, notice: "Location was successfully created." }
         format.json { render :show, status: :created, location: @location }
       # the location didn't get created or has errors.
-      elsif @location.errors.any? || @location.blank? 
+      elsif @location.blank? || @location.errors.any?
+        @countries = LocationsHelper.country_list
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @location.errors, status: :unprocessable_entity }
       elsif @location.present? && @forecast.blank?
         format.html { redirect_to @location, notice: "Location was created, but we were unable to retrieve the forecast." }
-        format.json { render json: forecast.errors, status: :unprocessable_entity }
+        format.json { render json: @forecast.errors, status: :unprocessable_entity }
       end
     end
   end

@@ -8,4 +8,8 @@ class Location < ApplicationRecord
   def geocoding_required?
     latitude.blank? || longitude.blank?
   end
+
+  def formatted_location
+    [address_one, address_two, city, province, postal_code, country].map { |part| part.presence }.compact.join(", ")
+  end
 end

@@ -11,7 +11,7 @@ bash:
 	docker compose run --rm web bash
 
 test:
-	docker compose run --rm web bin/rails test
+	docker compose run --rm web bin/bundle exec rspec
 
 migrate: 
 	docker compose run --rm web bin/rails db:migrate
