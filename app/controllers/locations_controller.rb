@@ -22,7 +22,7 @@ class LocationsController < ApplicationController
 
   # POST /locations or /locations.json
   def create
-    # the business logic for this controller call sits in a service object. 
+    # the business logic for this controller call sits in a service object.
     # we can initialize the service object and let it handle the orchestration.
     @location, @forecast = Locations::CreateWithForecastService.new(location_params).call
 

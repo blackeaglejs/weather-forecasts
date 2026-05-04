@@ -10,6 +10,6 @@ class Location < ApplicationRecord
   end
 
   def formatted_location
-    [address_one, address_two, city, province, postal_code, country].map { |part| part.presence }.compact.join(", ")
+    [ address_one, address_two, city, province, postal_code, country ].map { |part| part.presence }.compact.join(", ")
   end
 end

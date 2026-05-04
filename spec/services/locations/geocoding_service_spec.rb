@@ -19,7 +19,7 @@ RSpec.describe Locations::GeocodingService, type: :service do
     let!(:new_location) { create(:location) }
     context "when the first geocoding API call returns results" do
       it "should assign the resulting lat/lng coordinates to the location" do
-        stub_request(:get, /nominatim.openstreetmap.org/).to_return(status: 200, body: [{"lat": "40.7127281","lon": "-74.0060152"}].to_json)
+        stub_request(:get, /nominatim.openstreetmap.org/).to_return(status: 200, body: [ { "lat": "40.7127281", "lon": "-74.0060152" } ].to_json)
         service = Locations::GeocodingService.new(new_location)
         service.call
 
@@ -34,7 +34,7 @@ RSpec.describe Locations::GeocodingService, type: :service do
           stub_request(:get, /nominatim.openstreetmap.org/)
             .to_return(
               { status: 200, body: [].to_json }, # this covers the first instance with the full address
-              { status: 200, body: [{"lat": "40.7127281","lon": "-74.0060152"}].to_json } # this handles the second round with just the zip code
+              { status: 200, body: [ { "lat": "40.7127281", "lon": "-74.0060152" } ].to_json } # this handles the second round with just the zip code
             )
           service = Locations::GeocodingService.new(new_location)
 
@@ -48,7 +48,7 @@ RSpec.describe Locations::GeocodingService, type: :service do
         it "should raise a standard error indicating that we were unable to geocode the location" do
           stub_request(:get, /nominatim.openstreetmap.org/).to_return(status: 200, body: [].to_json)
           service = Locations::GeocodingService.new(new_location)
-          
+
           expect { service.call }.to raise_error(StandardError, "Unable to geocode location with the provided information")
         end
       end

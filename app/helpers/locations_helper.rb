@@ -4,6 +4,6 @@ module LocationsHelper
     file_content = File.read(file)
     data = JSON.parse(file_content)
 
-    data.map{|country| [country["name"], country["alpha-2"]]}
+    data.map { |country| [ country["name"], country["alpha-2"] ] }
   end
 end

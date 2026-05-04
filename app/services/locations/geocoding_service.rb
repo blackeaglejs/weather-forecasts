@@ -10,7 +10,7 @@ module Locations
       @location = location
     end
 
-    # the call method is the public method for this interface - all the business logic is in private emthods. 
+    # the call method is the public method for this interface - all the business logic is in private emthods.
     def call
       # 1. try and pull the lat/lng coordinates using the zip code from the database.
       # 2. if that fails, we'll call geocode to get the coordinates from the nominatim API.
@@ -31,7 +31,7 @@ module Locations
     private
 
     # let's try and find the location's approximate coordinates out of the database.
-    # the idea here is that zip codes are relatively small, so a weather forecast I'm not expecting huge 
+    # the idea here is that zip codes are relatively small, so a weather forecast I'm not expecting huge
     # variability in the lat/lng, and by extension of that, the weather forecast
     def find_coordinates_from_zip_code
       return nil if @location.postal_code.blank?
@@ -66,27 +66,27 @@ module Locations
       @location.update(coordinates)
     end
 
-    # the response from nominatim is an array of matches, but having specified a limit of 1, we'll either get an empty array or an array with one element 
-    # we only care here about the lat/lng in the response - not any of the other parameters - for now, so we'll ignore the rest of the response. 
+    # the response from nominatim is an array of matches, but having specified a limit of 1, we'll either get an empty array or an array with one element
+    # we only care here about the lat/lng in the response - not any of the other parameters - for now, so we'll ignore the rest of the response.
     def parse_geocoding_response(response)
       parsed_response = JSON.parse(response.body)
       return nil if parsed_response.empty?
 
       {
         latitude: parsed_response.first["lat"].to_d,
-        longitude: parsed_response.first["lon"].to_d,
+        longitude: parsed_response.first["lon"].to_d
       }
     end
 
-    # nominatim requires headers to ensure that they're getting light request traffic. 
+    # nominatim requires headers to ensure that they're getting light request traffic.
     # right now it's hardcoded to my email, but in a production app, we'd set this is as an environment variable.
     def headers
-      {"User-Agent" => "weather-forecasts/1.0 (zoheb.nensey@gmail.com)", "Accept" => "application/json"}
+      { "User-Agent" => "weather-forecasts/1.0 (zoheb.nensey@gmail.com)", "Accept" => "application/json" }
     end
 
-    # nominatim's search API takes query parameters - the pattern here is that we only include parameters that we have, and not anything else. 
+    # nominatim's search API takes query parameters - the pattern here is that we only include parameters that we have, and not anything else.
     def lookup_url
-      "https://nominatim.openstreetmap.org/search?#{[street, city, state, postal_code, country_code].reject(&:blank?).join("&")}&format=json&limit=1"
+      "https://nominatim.openstreetmap.org/search?#{[ street, city, state, postal_code, country_code ].reject(&:blank?).join("&")}&format=json&limit=1"
     end
 
     def postal_code_lookup_url
@@ -94,7 +94,7 @@ module Locations
     end
 
     def street
-      combined = [@location.address_one, @location.address_two].compact.join(" ").strip
+      combined = [ @location.address_one, @location.address_two ].compact.join(" ").strip
       combined.present? ? "street=#{combined}" : ""
     end
 

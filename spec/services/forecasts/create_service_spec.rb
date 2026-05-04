@@ -1,4 +1,4 @@
-require  "rails_helper"
+require "rails_helper"
 
 RSpec.describe Forecasts::CreateService, type: :service do
   let!(:location) { create(:location, latitude: 40.7128, longitude: -74.0060) }
@@ -6,7 +6,7 @@ RSpec.describe Forecasts::CreateService, type: :service do
   let(:successful_response_body) do
     {
       "current_weather" => { "temperature" => 72.0, "temperature_unit" => "F" },
-      "daily" => { "temperature_2m_max" => [80.0], "temperature_2m_min" => [65.0] }
+      "daily" => { "temperature_2m_max" => [ 80.0 ], "temperature_2m_min" => [ 65.0 ] }
     }.to_json
   end
 

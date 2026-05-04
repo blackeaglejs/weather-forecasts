@@ -35,7 +35,7 @@ module Forecasts
 
     # we pull the data from here
     def fetch_forecast_data
-      @raw_response = HTTParty.get(forecast_api_url, headers: {"Accept" => "application/json"})
+      @raw_response = HTTParty.get(forecast_api_url, headers: { "Accept" => "application/json" })
     rescue SocketError, Net::OpenTimeout, Net::ReadTimeout => e
       raise StandardError, "Forecast API request failed: #{e.message}"
     end
@@ -74,7 +74,7 @@ module Forecasts
 
     # this API url uses the lat/lng to get current temperature, daily high, and daily low for this location.
     def forecast_api_url
-      "#{BASE_URL}?latitude=#{@location.latitude.to_s}&longitude=#{@location.longitude.to_s}&daily=temperature_2m_max,temperature_2m_min&current=temperature_2m&wind_speed_unit=mph&temperature_unit=fahrenheit"
+      "#{BASE_URL}?latitude=#{@location.latitude}&longitude=#{@location.longitude}&daily=temperature_2m_max,temperature_2m_min&current=temperature_2m&wind_speed_unit=mph&temperature_unit=fahrenheit"
     end
   end
 end
